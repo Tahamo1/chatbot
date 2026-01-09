@@ -1,19 +1,19 @@
-package com.mohammaditaha.chatbot.tools;
+package com.mohammaditaha.mcpserver.tools;
 
-import org.springframework.ai.tool.annotation.Tool;
-import org.springframework.ai.tool.annotation.ToolParam;
+import org.springaicommunity.mcp.annotation.McpArg;
+import org.springaicommunity.mcp.annotation.McpTool;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class AITools {
-    @Tool(name = "getEmployee",
+public class McpTools {
+    @McpTool(name = "getEmployee",
             description = "get information about a given employee")
-    public Employee getEmployee(@ToolParam(description = "The employee name") String name) {
+    public Employee getEmployee(@McpArg(description = "The employee name") String name) {
         return new Employee(name, 12300, 4);
     }
-    @Tool (description = "Get All Employees")
+    @McpTool (description = "Get All Employees")
     public List<Employee> getAllEmployees() {
         return List.of(
                 new Employee("Hassan", 12300, 4),

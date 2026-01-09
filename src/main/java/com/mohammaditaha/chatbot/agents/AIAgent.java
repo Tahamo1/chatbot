@@ -1,9 +1,9 @@
 package com.mohammaditaha.chatbot.agents;
-
-import com.mohammaditaha.chatbot.tools.AITools;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.support.ToolCallbacks;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
@@ -12,8 +12,11 @@ public class AIAgent {
     private ChatClient chatClient;
 
     public AIAgent(ChatClient.Builder builder ,
-                   ChatMemory memory ,
-                   AITools tools) {
+                   ChatMemory memory, ToolCallbackProvider tools) {
+        Arrays.Streams(tools.getToolCallbacks()).forEach(toolCallback -> {
+            System.out.println("---------------");
+            System.out.println(toolCallback.getToolDefinition());
+                    });
         this.chatClient = builder
                 .defaultSystem("""
                       
@@ -21,7 +24,7 @@ public class AIAgent {
                            Si aucun contexte n'est fourni , repond avec JE NE SAIS PAS 
                         """)
                 .defaultAdvisors(MessageChatMemoryAdvisor.builder(memory).build())
-                .defaultTools()
+                .defaultToolCallbacks(tools)
                 .build();
     }
 
